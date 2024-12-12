@@ -1,0 +1,93 @@
+{% load static %}
+
+    {% block style %}
+    <link rel="stylesheet" href="{% static '' %}assets/css/chat-collapse.css">
+    {% endblock %}
+
+    <div id="chat-circle">
+      <i class="material-icons">speaker_phone</i>
+    </div>
+    <div class="chat-box" style="display: none;">
+      <div class="chat-box-header">
+        Chat
+        <span class="chat-box-toggle">&times;</span>
+      </div>
+      <div class="chat-box-body">
+        <div class="chat-logs"></div>
+      </div>
+      <div id="chat-input-container" class="chat-input-container">
+        <form id="chat-form" class="inputForm">
+          <input id="chat-input" class="chat-input" type="text" placeholder="Write your message...">
+          <button id="chat-submit"  type="submit">&#10148;</button>
+        </form>
+      </div>
+    </div>
+    
+    
+
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const chatCircle = document.getElementById("chat-circle");
+    const chatBox = document.querySelector(".chat-box");
+    const chatToggle = document.querySelector(".chat-box-toggle");
+  
+    // Chat oynasini ochish/yopish
+    chatCircle.addEventListener("click", function () {
+      chatBox.style.display = chatBox.style.display === "none" || chatBox.style.display === "" ? "block" : "none";
+    });
+  
+    // Chat oynasini yopish
+    chatToggle.addEventListener("click", function () {
+      chatBox.style.display = "none";
+    });
+  
+    let INDEX = 0;
+  
+    // Xabar yuborish funksiyasi
+    function generate_message(msg, type) {
+      INDEX++;
+      const messageHTML = `
+        <div id='cm-msg-${INDEX}' class="chat-msg ${type}">
+          <div class="cm-msg-text">${msg}</div>
+        </div>
+      `;
+      document.querySelector(".chat-logs").insertAdjacentHTML("beforeend", messageHTML);
+      document.querySelector(`#cm-msg-${INDEX}`).scrollIntoView({ behavior: "smooth" });
+      if (type === "self") {
+        document.getElementById("chat-input").value = ""; // Inputni tozalash
+      }
+    }
+  
+    // Xabar yuborishni boshqarish
+    document.getElementById("chat-form").addEventListener("submit", function (e) {
+      e.preventDefault(); // Sahifa yangilanishini to'xtatish
+      const msg = document.getElementById("chat-input").value.trim();
+      if (!msg) return;
+  
+      generate_message(msg, "self");
+  
+      // Backend APIga so'rov yuborish
+      fetch("/chat/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: msg }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data && data.reply) {
+            generate_message(data.reply, "user");
+          } else {
+            generate_message("No response from server", "user");
+          }
+        })
+        .catch((error) => {
+          generate_message("Error connecting to server: " + error.message, "user");
+        });
+    });
+  });
+  
+  </script>
+    
