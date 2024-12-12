@@ -9,7 +9,7 @@
     </div>
     <div class="chat-box" style="display: none;">
       <div class="chat-box-header">
-        Chat
+        Shop Assitant
         <span class="chat-box-toggle">&times;</span>
       </div>
       <div class="chat-box-body">
@@ -60,7 +60,64 @@
         document.getElementById("chat-input").value = ""; // Inputni tozalash
       }
     }
-  
+
+    function generate_product_cards(products) {
+  let productCardsHTML = `
+    <div class="product-results">
+      <p>Sizning so'rovingizga doir ${products.length} ta mahsulot topildi.</p>
+      <div class="product-cards">
+  `;
+
+  products.forEach(product => {
+    productCardsHTML += `
+      <div class="product-card">
+        <div class="product-img">
+          <a href="/product-detail/${product.slug}/${product.attr_id}">
+            <img src="${product.image}" alt="${product.name}">
+          </a>
+        </div>
+        <div class="product-info">
+          <h3>${product.name}</h3>
+          <p>Kategoriya: ${product.category}</p>
+          <p>Narx: ${product.price} UZS</p>
+          <p>Rang: ${product.color}</p>
+          <span class="product-status">${product.status}</span>
+        </div>
+      </div>
+    `;
+  });
+
+  productCardsHTML += `
+      </div>
+      <button id="view-more" class="view-more-btn">Ko'proq ko'rish</button>
+    </div>
+  `;
+
+  document.querySelector(".chat-logs").insertAdjacentHTML("beforeend", productCardsHTML);
+  document.querySelector(".chat-logs").scrollIntoView({ behavior: "smooth" });
+
+  // "Ko'proq ko'rish" tugmasi bosilganda search filterga o'tkazish
+  document.getElementById("view-more").addEventListener("click", function () {
+    window.location.href = `/search/?category_ids=${products.map(p => p.attr_id).join(",")}`;
+  });
+}
+
+
+  // Xabar yuborish funksiyasi
+    function generate_message_bot(msg) {
+          type="user";
+          INDEX++;
+          const messageHTML = `
+            <div id='cm-msg-${INDEX}' class="chat-msg ${type}">
+              <div class="cm-msg-text">${msg}</div>
+            </div>
+          `;
+          document.querySelector(".chat-logs").insertAdjacentHTML("beforeend", messageHTML);
+          document.querySelector(`#cm-msg-${INDEX}`).scrollIntoView({ behavior: "smooth" });
+          if (type === "self") {
+            document.getElementById("chat-input").value = ""; // Inputni tozalash
+      }
+    }
     // Xabar yuborishni boshqarish
     document.getElementById("chat-form").addEventListener("submit", function (e) {
       e.preventDefault(); // Sahifa yangilanishini to'xtatish
@@ -70,22 +127,25 @@
       generate_message(msg, "self");
   
       // Backend APIga so'rov yuborish
-      fetch("/chat/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: msg }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data && data.reply) {
-            generate_message(data.reply, "user");
-          } else {
-            generate_message("No response from server", "user");
-          }
-        })
-        .catch((error) => {
-          generate_message("Error connecting to server: " + error.message, "user");
-        });
+     fetch("/chat/", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ message: msg }),
+})
+  .then((response) => response.json())
+  .then((data) => {
+    if (data && data.products) {
+      generate_product_cards(data.products);
+    } else {
+      generate_message_bot("Hech qanday mahsulot topilmadi.");
+    }
+  })
+  .catch((error) => {
+    generate_message_bot("Server bilan bog'lanishda xatolik: " + error.message);
+  });
+
+
+
     });
   });
   

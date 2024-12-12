@@ -55,10 +55,42 @@ def chat_message(request):
             data = json.loads(request.body)
             user_message = data.get('message', '')
 
-            # Backendda javob generatsiya qilish
-            reply = f"Received your message: {user_message}"
+            reply = f"Sizning xabaringiz: {user_message}"
 
-            return JsonResponse({'reply': reply})
+            products = [
+                {
+                    "category": "Erkaklar Kiyimlar",
+                    "name": "Oversize Klassik Ko'ylak",
+                    "price": 230000,
+                    "color": "Qora",
+                    "status": "SALE",
+                    "image": "http://127.0.0.1:8000/media/product/images/cr30c8usbq7g1s9a7o4g.jpg",
+                    "slug": "oversize-klassik-koylak",
+                    "attr_id": 2
+                },
+                {
+                    "category": "Ayollar Kiyimlar",
+                    "name": "Oversize  Ko'ylak",
+                    "price": 200000,
+                    "color": "Oq",
+                    "status": "NEW",
+                    "image": "http://127.0.0.1:8000/media/product/images/cr30d77iraat934qcedg_vN6pw2c.jpg",
+                    "slug": "oversize-koylak",
+                    "attr_id": 8
+                },
+
+            ]
+
+            search_filter = {
+                "category_ids": [2,4,5],
+                "color_ids": [1,2,3],
+                "size": [2,4],
+                "price": [100000, 500000],
+                "search": "Kiyim"
+
+            }
+
+            return JsonResponse({'reply': reply, 'products': products, 'search_filter': search_filter})
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
     return JsonResponse({'error': 'Invalid request method'}, status=400)
