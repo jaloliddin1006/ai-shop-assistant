@@ -1,0 +1,33 @@
+version: "3.0"
+
+intents:
+  - greet
+  - goodbye
+  - search_product
+  - ask_additional_info
+  - ask_quantity
+
+entities:
+  - product
+  - quantity
+
+actions:
+  - action_greet
+  - action_search_products
+  - action_ask_additional_info
+  - action_ask_quantity
+  - action_goodbye
+
+responses:
+  utter_greet:
+    - text: "Salom! Sizni qanday yordam bera olishim mumkin?"
+  utter_goodbye:
+    - text: "Xayr! Yana yordam kerak bo'lsa, kelib turibdi."
+  utter_ask_product:
+    - text: "Qaysi mahsulotni qidirmoqchisiz?"
+  utter_ask_additional_info:
+    - text: "Mahsulot haqida qo'shimcha ma'lumot kerakmi?"
+  utter_ask_quantity:
+    - text: "Nechta mahsulot olmoqchisiz?"
+  utter_default:
+    - text: "Kechirasiz, men buni tushunmadim."

@@ -70,4 +70,4 @@ class ProductAttributeAdmin(admin.ModelAdmin):
 
 @admin.register(RasaProduct)
 class RasaProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'category', 'material', 'color']
+    list_display = ['name', 'material', 'color']

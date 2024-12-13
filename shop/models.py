@@ -144,24 +144,18 @@ class ProductImage(BaseModel):
 
 
 
-# products/models.py
 from django.db import models
 
 class RasaProduct(models.Model):
-    name = models.CharField(max_length=255)
-    description = models.TextField()
-    category = models.CharField(max_length=100)
-    material = models.CharField(max_length=100)
-    color = models.CharField(max_length=50)
-    gender = models.CharField(
-        max_length=10,
-        choices=[('male', 'Male'), ('female', 'Female'), ('child', 'Child')],
-    )
-    stock = models.PositiveIntegerField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    atr_id = models.PositiveIntegerField()
-    ctg_id = models.PositiveIntegerField()
-    size = models.CharField(max_length=10)
+    atr_id = models.IntegerField()  # Atribut ID
+    ctg_id = models.IntegerField()  # Kategoriya ID
+    name = models.CharField(max_length=255)  # Mahsulot nomi
+    description = models.TextField()  # Tavsif
+    size = models.CharField(max_length=50)  # Hajmi
+    price = models.DecimalField(max_digits=10, decimal_places=2)  # Narx
+    quantity = models.IntegerField()  # Soni
+    color = models.CharField(max_length=50)  # Rang
+    material = models.CharField(max_length=100)  # Material turi
 
     def __str__(self):
-        return self.name
+        return f"{self.name} - {self.color} ({self.size})"

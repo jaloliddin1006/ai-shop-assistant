@@ -1,0 +1,30 @@
+version: "3.0"
+
+stories:
+  - story: Greet and ask for product
+    steps:
+      - intent: greet
+      - action: action_greet
+      - intent: search_product
+      - action: action_search_products
+
+  - story: Search product and ask for additional info
+    steps:
+      - intent: search_product
+      - action: action_search_products
+      - intent: ask_additional_info
+      - action: action_ask_additional_info
+
+  - story: Search product and ask for quantity
+    steps:
+      - intent: search_product
+      - action: action_search_products
+      - intent: ask_quantity
+      - action: action_ask_quantity
+
+  - story: Say goodbye after search
+    steps:
+      - intent: search_product
+      - action: action_search_products
+      - intent: goodbye
+      - action: action_goodbye

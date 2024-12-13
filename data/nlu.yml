@@ -1,0 +1,38 @@
+version: "3.0"
+
+nlu:
+- intent: greet
+  examples: |
+    - Salom
+    - Assalomu alaykum
+    - Hayrli kun
+    - Salom, qanday ishlayapsiz?
+
+- intent: goodbye
+  examples: |
+    - Xayr
+    - Xayrli kun
+    - Yaxshi kunlar
+    - Salom, qaytib kelaman
+
+- intent: search_product
+  examples: |
+    - men [telefon](product) qidirmoqchiman
+    - [noutbuk](product) qidirmoqchiman
+    - [telefon](product) izlayapman
+    - [televizor](product) qidirmoqchiman
+    - [smartfon](product) izlamoqchiman
+    - men [kompyuter](product) izlayapman
+
+- intent: ask_additional_info
+  examples: |
+    - Boshqa xususiyatlarini ayting
+    - Yana nima bor?
+    - Qo'shimcha variantlar mavjudmi?
+    - Qaysi rangda mavjud?
+
+- intent: ask_quantity
+  examples: |
+    - Qancha mahsulot kerak?
+    - Nechta telefon olishni istaysiz?
+    - Mahsulotni nechta olasiz?

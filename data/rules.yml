@@ -1,0 +1,26 @@
+version: "3.0"
+rules:
+  - rule: Greet the user
+    steps:
+      - intent: greet
+      - action: action_greet
+
+  - rule: Farewell the user
+    steps:
+      - intent: goodbye
+      - action: action_goodbye
+
+  - rule: Ask for product when searching
+    steps:
+      - intent: search_product
+      - action: action_search_products
+
+  - rule: Ask for additional information if needed
+    steps:
+      - intent: ask_additional_info
+      - action: action_ask_additional_info
+
+  - rule: Ask for quantity if user wants to specify it
+    steps:
+      - intent: ask_quantity
+      - action: action_ask_quantity
