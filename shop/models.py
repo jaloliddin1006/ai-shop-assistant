@@ -142,3 +142,26 @@ class ProductImage(BaseModel):
         verbose_name_plural = 'Mahsulot rasmlari'
         db_table = 'product_images'
 
+
+
+# products/models.py
+from django.db import models
+
+class RasaProduct(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    category = models.CharField(max_length=100)
+    material = models.CharField(max_length=100)
+    color = models.CharField(max_length=50)
+    gender = models.CharField(
+        max_length=10,
+        choices=[('male', 'Male'), ('female', 'Female'), ('child', 'Child')],
+    )
+    stock = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    atr_id = models.PositiveIntegerField()
+    ctg_id = models.PositiveIntegerField()
+    size = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.name

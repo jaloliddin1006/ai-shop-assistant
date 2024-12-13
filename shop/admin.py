@@ -66,3 +66,8 @@ class ProductAttributeAdmin(admin.ModelAdmin):
     list_filter = ['is_active', 'product', 'size', 'color']
     search_fields = ['product', 'size', 'color']
     list_editable = ['price', 'discount_price', 'rating']
+
+
+@admin.register(RasaProduct)
+class RasaProductAdmin(admin.ModelAdmin):
+    list_display = ['name', 'category', 'material', 'color']
